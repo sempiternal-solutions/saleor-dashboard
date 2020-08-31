@@ -688,6 +688,7 @@ type BulkProductError {
   field: String
   message: String
   code: ProductErrorCode!
+  attributes: [ID!]
   index: Int
   warehouses: [ID!]
 }
@@ -696,6 +697,7 @@ type BulkStockError {
   field: String
   message: String
   code: ProductErrorCode!
+  attributes: [ID!]
   index: Int
 }
 
@@ -897,6 +899,7 @@ type CheckoutComplete {
   errors: [Error!]! @deprecated(reason: "Use typed errors with error codes. This field will be removed after 2020-07-31.")
   order: Order
   confirmationNeeded: Boolean!
+  confirmationData: JSONString
   checkoutErrors: [CheckoutError!]!
 }
 
@@ -2248,9 +2251,11 @@ enum LanguageCodeEnum {
   IS
   IT
   JA
+  KM
   KO
   LT
   MN
+  MY
   NB
   NL
   PL
@@ -2749,7 +2754,7 @@ type Mutation {
   exportProducts(input: ExportProductsInput!): ExportProducts
   checkoutAddPromoCode(checkoutId: ID!, promoCode: String!): CheckoutAddPromoCode
   checkoutBillingAddressUpdate(billingAddress: AddressInput!, checkoutId: ID!): CheckoutBillingAddressUpdate
-  checkoutComplete(checkoutId: ID!, redirectUrl: String, storeSource: Boolean = false): CheckoutComplete
+  checkoutComplete(checkoutId: ID!, paymentData: JSONString, redirectUrl: String, storeSource: Boolean = false): CheckoutComplete
   checkoutCreate(input: CheckoutCreateInput!): CheckoutCreate
   checkoutCustomerAttach(checkoutId: ID!, customerId: ID): CheckoutCustomerAttach
   checkoutCustomerDetach(checkoutId: ID!): CheckoutCustomerDetach
@@ -3044,6 +3049,8 @@ enum OrderEventsEmailsEnum {
   SHIPPING_CONFIRMATION
   TRACKING_UPDATED
   ORDER_CONFIRMATION
+  ORDER_CANCEL
+  ORDER_REFUND
   FULFILLMENT_CONFIRMATION
   DIGITAL_LINKS
 }
@@ -3062,6 +3069,7 @@ enum OrderEventsEnum {
   EMAIL_SENT
   PAYMENT_AUTHORIZED
   PAYMENT_CAPTURED
+  EXTERNAL_SERVICE_NOTIFICATION
   PAYMENT_REFUNDED
   PAYMENT_VOIDED
   PAYMENT_FAILED
@@ -3119,6 +3127,7 @@ type OrderLine implements Node {
   digitalContentUrl: DigitalContentUrl
   thumbnail(size: Int): Image
   unitPrice: TaxedMoney
+  totalPrice: TaxedMoney
   variant: ProductVariant
   translatedProductName: String!
   translatedVariantName: String!
@@ -3386,10 +3395,13 @@ type PaymentCapture {
 
 enum PaymentChargeStatusEnum {
   NOT_CHARGED
+  PENDING
   PARTIALLY_CHARGED
   FULLY_CHARGED
   PARTIALLY_REFUNDED
   FULLY_REFUNDED
+  REFUSED
+  CANCELLED
 }
 
 type PaymentCountableConnection {
@@ -3433,9 +3445,10 @@ type PaymentGateway {
 
 input PaymentInput {
   gateway: String!
-  token: String!
+  token: String
   amount: Decimal
   billingAddress: AddressInput
+  returnUrl: String
 }
 
 type PaymentRefund {
@@ -3721,6 +3734,7 @@ type ProductError {
   field: String
   message: String
   code: ProductErrorCode!
+  attributes: [ID!]
 }
 
 enum ProductErrorCode {
@@ -5021,10 +5035,14 @@ enum TransactionError {
 
 enum TransactionKind {
   AUTH
+  PENDING
+  ACTION_TO_CONFIRM
   REFUND
+  REFUND_ONGOING
   CAPTURE
   VOID
   CONFIRM
+  CANCEL
 }
 
 union TranslatableItem = ProductTranslatableContent | CollectionTranslatableContent | CategoryTranslatableContent | AttributeTranslatableContent | AttributeValueTranslatableContent | ProductVariantTranslatableContent | PageTranslatableContent | ShippingMethodTranslatableContent | SaleTranslatableContent | VoucherTranslatableContent | MenuItemTranslatableContent
