@@ -97,7 +97,9 @@ module.exports = (env, argv) => {
     optimization: {
       removeAvailableModules: false,
       removeEmptyChunks: false,
-      splitChunks: false
+      splitChunks: {
+        chunks: "all"
+      }
     },
     output,
     plugins: [checkerPlugin, environmentPlugin, htmlWebpackPlugin],
