@@ -56,6 +56,7 @@ import ProductVariants from "../ProductVariants";
 
 export interface ProductUpdatePageProps extends ListActions {
   defaultWeightUnit: string;
+  availableCurrencies: string[];
   errors: ProductErrorFragment[];
   placeholderImage: string;
   collections: SearchCollections_search_edges_node[];
@@ -94,6 +95,7 @@ export interface ProductUpdatePageSubmitData extends ProductUpdatePageFormData {
 
 export const ProductUpdatePage: React.FC<ProductUpdatePageProps> = ({
   defaultWeightUnit,
+  availableCurrencies,
   disabled,
   categories: categoryChoiceList,
   collections: collectionChoiceList,
@@ -170,7 +172,7 @@ export const ProductUpdatePage: React.FC<ProductUpdatePageProps> = ({
 
   const categories = getChoices(categoryChoiceList);
   const collections = getChoices(collectionChoiceList);
-  const currency =
+  let currency =
     product?.variants?.length && product.variants[0].price.currency;
   const hasVariants = maybe(() => product.productType.hasVariants, false);
 
@@ -241,6 +243,8 @@ export const ProductUpdatePage: React.FC<ProductUpdatePageProps> = ({
           attributes,
           triggerChange
         );
+        const handleUpdateCurrency = selectedCurrency =>
+          (data.selectedcurrency = currency = selectedCurrency);
         const changeMetadata = makeMetadataChangeHandler(change);
 
         return (
@@ -282,10 +286,12 @@ export const ProductUpdatePage: React.FC<ProductUpdatePageProps> = ({
                     <>
                       <ProductPricing
                         currency={currency}
+                        availableCurrencies={availableCurrencies}
                         data={data}
                         disabled={disabled}
                         errors={errors}
                         onChange={change}
+                        updateCurrency={handleUpdateCurrency}
                       />
                       <CardSpacer />
                     </>

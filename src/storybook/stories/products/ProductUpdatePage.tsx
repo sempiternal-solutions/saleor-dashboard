@@ -17,6 +17,7 @@ const product = productFixture(placeholderImage);
 
 const props: ProductUpdatePageProps = {
   ...listActionsProps,
+  availableCurrencies: [],
   categories: [product.category],
   collections,
   defaultWeightUnit: "kg",

@@ -253,7 +253,13 @@ export const ProductUpdate: React.FC<ProductUpdateProps> = ({ id, params }) => {
     ...maybe(() => updateProductOpts.data.productUpdate.errors, []),
     ...maybe(() => updateSimpleProductOpts.data.productUpdate.errors, [])
   ];
-
+  const availableCurrencies = shop?.currencies || [
+    "USD",
+    "EUR",
+    "INR",
+    "CAD",
+    "MSO"
+  ];
   return (
     <>
       <WindowTitle title={maybe(() => data.product.name)} />
@@ -261,6 +267,7 @@ export const ProductUpdate: React.FC<ProductUpdateProps> = ({ id, params }) => {
         categories={categories}
         collections={collections}
         defaultWeightUnit={shop?.defaultWeightUnit}
+        availableCurrencies={availableCurrencies}
         disabled={disableFormSave}
         errors={errors}
         fetchCategories={searchCategories}

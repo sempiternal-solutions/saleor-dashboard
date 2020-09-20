@@ -22,6 +22,7 @@ const useStyles = makeStyles(
 
 interface ProductPricingProps {
   currency?: string;
+  availableCurrencies: string[];
   data: {
     chargeTaxes: boolean;
     basePrice: number;
@@ -29,10 +30,19 @@ interface ProductPricingProps {
   disabled: boolean;
   errors: ProductErrorFragment[];
   onChange: (event: React.ChangeEvent<any>) => void;
+  updateCurrency(string);
 }
 
 const ProductPricing: React.FC<ProductPricingProps> = props => {
-  const { currency, data, disabled, errors, onChange } = props;
+  const {
+    currency,
+    availableCurrencies,
+    data,
+    disabled,
+    errors,
+    onChange,
+    updateCurrency
+  } = props;
 
   const classes = useStyles(props);
   const intl = useIntl();
@@ -70,6 +80,8 @@ const ProductPricing: React.FC<ProductPricingProps> = props => {
             name="basePrice"
             value={data.basePrice}
             currencySymbol={currency}
+            availableCurrencies={availableCurrencies}
+            updateCurrency={updateCurrency}
             onChange={onChange}
             InputProps={{
               inputProps: {

@@ -43,6 +43,7 @@ export interface ShopInfo_shop {
   countries: ShopInfo_shop_countries[];
   defaultCountry: ShopInfo_shop_defaultCountry | null;
   defaultCurrency: string;
+  currencies: string[];
   defaultWeightUnit: WeightUnitsEnum | null;
   displayGrossPrices: boolean;
   domain: ShopInfo_shop_domain;

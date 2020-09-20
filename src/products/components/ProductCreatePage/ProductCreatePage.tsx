@@ -67,6 +67,7 @@ interface FormData extends MetadataFormData {
   trackInventory: boolean;
   visibleInListings: boolean;
   weight: string;
+  selectedCurrency: string;
 }
 export interface ProductCreatePageSubmitData extends FormData {
   attributes: ProductAttributeInput[];
@@ -78,6 +79,7 @@ interface ProductCreatePageProps {
   collections: SearchCollections_search_edges_node[];
   categories: SearchCategories_search_edges_node[];
   currency: string;
+  availableCurrencies: string[];
   disabled: boolean;
   fetchMoreCategories: FetchMoreProps;
   fetchMoreCollections: FetchMoreProps;
@@ -101,6 +103,7 @@ interface ProductCreatePageProps {
 
 export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
   currency,
+  availableCurrencies,
   disabled,
   categories: categoryChoiceList,
   collections: collectionChoiceList,
@@ -165,7 +168,8 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
     stockQuantity: null,
     trackInventory: false,
     visibleInListings: false,
-    weight: ""
+    weight: "",
+    selectedCurrency: ""
   };
 
   // Display values
@@ -228,7 +232,8 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
           setProductType,
           productTypeChoiceList
         );
-
+        const handleUpdateCurrency = selectedCurrency =>
+          (currency = data.selectedCurrency = selectedCurrency);
         const changeMetadata = makeMetadataChangeHandler(change);
 
         return (
@@ -267,10 +272,12 @@ export const ProductCreatePage: React.FC<ProductCreatePageProps> = ({
                     />
                     <ProductPricing
                       currency={currency}
+                      availableCurrencies={availableCurrencies}
                       data={data}
                       disabled={disabled}
                       errors={errors}
                       onChange={change}
+                      updateCurrency={handleUpdateCurrency}
                     />
                     <CardSpacer />
                     <ProductStocks

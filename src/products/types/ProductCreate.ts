@@ -247,4 +247,5 @@ export interface ProductCreateVariables {
   trackInventory: boolean;
   weight?: any | null;
   visibleInListings?: boolean | null;
+  currency: string;
 }

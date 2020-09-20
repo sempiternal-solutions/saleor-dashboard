@@ -48,6 +48,7 @@ const ProductVariantPrice: React.FC<ProductVariantPriceProps> = props => {
         <div className={classes.grid}>
           <div>
             <PriceField
+              availableCurrencies={[]}
               error={!!formErrors.price}
               name="price"
               label={intl.formatMessage({
@@ -57,10 +58,12 @@ const ProductVariantPrice: React.FC<ProductVariantPriceProps> = props => {
               currencySymbol={currencySymbol}
               onChange={onChange}
               disabled={loading}
+              updateCurrency={cur => cur}
             />
           </div>
           <div>
             <PriceField
+              availableCurrencies={[]}
               error={!!formErrors.cost_price}
               name="costPrice"
               label={intl.formatMessage({
@@ -78,6 +81,7 @@ const ProductVariantPrice: React.FC<ProductVariantPriceProps> = props => {
               currencySymbol={currencySymbol}
               onChange={onChange}
               disabled={loading}
+              updateCurrency={cur => cur}
             />
           </div>
         </div>

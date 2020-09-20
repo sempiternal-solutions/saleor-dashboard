@@ -218,6 +218,7 @@ export interface SimpleProductUpdate_productUpdate_product {
   weight: SimpleProductUpdate_productUpdate_product_weight | null;
   availableForPurchase: any | null;
   visibleInListings: boolean;
+  currency:string;
 }
 
 export interface SimpleProductUpdate_productUpdate {
@@ -830,4 +831,5 @@ export interface SimpleProductUpdateVariables {
   deleteStocks: string[];
   updateStocks: StockInput[];
   weight?: any | null;
+  currency?: string | null;
 }

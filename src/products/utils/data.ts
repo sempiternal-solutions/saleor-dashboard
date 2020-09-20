@@ -188,6 +188,7 @@ export interface ProductUpdatePageFormData extends MetadataFormData {
   trackInventory: boolean;
   weight: string;
   visibleInListings: boolean;
+  selectedcurrency: string;
 }
 
 export function getProductUpdatePageFormData(
@@ -224,7 +225,9 @@ export function getProductUpdatePageFormData(
     ),
     trackInventory: !!product?.variants[0]?.trackInventory,
     visibleInListings: !!product?.visibleInListings,
-    weight: product?.weight?.value.toString() || ""
+    weight: product?.weight?.value.toString() || "",
+    selectedcurrency:
+      product?.pricing?.priceRangeUndiscounted?.start?.gross?.currency
   };
 }
 

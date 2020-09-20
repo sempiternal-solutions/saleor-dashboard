@@ -80,6 +80,7 @@ export const ProductCreateView: React.FC = () => {
           id: attribute.id,
           values: attribute.value
         })),
+        currency: formData.selectedCurrency,
         basePrice: decimal(formData.basePrice),
         category: formData.category,
         chargeTaxes: formData.chargeTaxes,
@@ -111,6 +112,13 @@ export const ProductCreateView: React.FC = () => {
     updateMetadata,
     updatePrivateMetadata
   );
+  const availableCurrencies = shop?.currencies || [
+    "USD",
+    "EUR",
+    "INR",
+    "CAD",
+    "MSO"
+  ];
 
   return (
     <>
@@ -122,6 +130,7 @@ export const ProductCreateView: React.FC = () => {
       />
       <ProductCreatePage
         currency={shop?.defaultCurrency}
+        availableCurrencies={availableCurrencies}
         categories={(searchCategoryOpts.data?.search.edges || []).map(
           edge => edge.node
         )}

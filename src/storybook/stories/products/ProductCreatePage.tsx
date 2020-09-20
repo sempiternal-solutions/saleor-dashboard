@@ -17,6 +17,7 @@ storiesOf("Views / Products / Create product", module)
   .addDecorator(Decorator)
   .add("default", () => (
     <ProductCreatePage
+      availableCurrencies={[]}
       currency="USD"
       disabled={false}
       errors={[]}
@@ -39,6 +40,7 @@ storiesOf("Views / Products / Create product", module)
   ))
   .add("When loading", () => (
     <ProductCreatePage
+      availableCurrencies={[]}
       currency="USD"
       disabled={true}
       errors={[]}
@@ -61,6 +63,7 @@ storiesOf("Views / Products / Create product", module)
   ))
   .add("form errors", () => (
     <ProductCreatePage
+      availableCurrencies={[]}
       currency="USD"
       disabled={false}
       errors={(["name", "productType", "category", "sku"] as Array<
